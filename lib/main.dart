@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'core/routing/app_router.dart';
+import 'core/services/service_locator.dart';
 import 'core/theme/app_theme.dart';
 
 void main() async {
-  // التأكد من تهيئة بيئة Flutter قبل تنفيذ أي كود يعتمد على الـ Platform
   WidgetsFlutterBinding.ensureInitialized();
   
-  // TODO: تهيئة الاعتماديات (Dependency Injection) سيتم إضافتها لاحقاً
-  // TODO: تهيئة قاعدة البيانات المحلية سيتم إضافتها لاحقاً
+  // 1. تهيئة الـ Service Locator
+  await initServiceLocator();
+  
+  // TODO: تهيئة قاعدة البيانات المحلية سيتم إضافتها هنا لاحقاً
 
   runApp(const PosApp());
 }
@@ -17,10 +21,13 @@ class PosApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router( // استخدام .router بدلاً من home
       title: 'نظام نقاط البيع',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      
+      // نظام التوجيه
+      routerConfig: AppRouter.router,
       
       // إعدادات اللغة لدعم السوق المصري (RTL)
       localizationsDelegates: const [
@@ -29,16 +36,9 @@ class PosApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('ar', 'EG'), // العربية - مصر
+        Locale('ar', 'EG'),
       ],
-      locale: const Locale('ar', 'EG'), // فرض اللغة العربية بشكل أساسي
-      
-      // شاشة مؤقتة حتى نقوم بربط ميزة التراخيص وتسجيل الدخول
-      home: const Scaffold(
-        body: Center(
-          child: Text('جاري تهيئة نظام الكاشير...'),
-        ),
-      ),
+      locale: const Locale('ar', 'EG'),
     );
   }
 }
