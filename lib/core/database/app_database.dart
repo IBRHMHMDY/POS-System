@@ -4,7 +4,6 @@ import 'package:drift/native.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
-// الجزء المسؤول عن توليد الكود التلقائي (سيتم إنشاؤه لاحقاً)
 part 'app_database.g.dart';
 
 // ==========================================
@@ -13,8 +12,8 @@ part 'app_database.g.dart';
 class Users extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 3, max: 50)();
-  TextColumn get role => text()(); // (Owner, Manager, Cashier)
-  TextColumn get passcode => text().withLength(min: 4, max: 10)(); // لتسجيل الدخول السريع
+  TextColumn get role => text()(); // الأدوار: Owner, Manager, Cashier
+  TextColumn get passcode => text().withLength(min: 4, max: 10)();
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
 }
 
@@ -30,7 +29,7 @@ class Categories extends Table {
 
 class Products extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get categoryId => integer().references(Categories, #id)(); // Foreign Key
+  IntColumn get categoryId => integer().references(Categories, #id)();
   TextColumn get name => text()();
   RealColumn get price => real()();
   TextColumn get barcode => text().nullable()();
@@ -43,23 +42,23 @@ class Products extends Table {
 // ==========================================
 class Shifts extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get userId => integer().references(Users, #id)(); // الموظف المسؤول
+  IntColumn get userId => integer().references(Users, #id)();
   DateTimeColumn get startTime => dateTime()();
-  DateTimeColumn get endTime => dateTime().nullable()(); // فارغ يعني الوردية مفتوحة
-  RealColumn get startingCash => real().withDefault(const Constant(0.0))(); // عهدة الدرج
+  DateTimeColumn get endTime => dateTime().nullable()();
+  RealColumn get startingCash => real().withDefault(const Constant(0.0))();
   RealColumn get totalSales => real().withDefault(const Constant(0.0))();
   RealColumn get totalExpenses => real().withDefault(const Constant(0.0))();
-  RealColumn get actualCash => real().nullable()(); // النقدية الفعلية عند الجرد
+  RealColumn get actualCash => real().nullable()();
   BoolColumn get isClosed => boolean().withDefault(const Constant(false))();
 }
 
 // ==========================================
-// 4. جدول المصروفات (Expenses) - ميزة مستقلة
+// 4. جدول المصروفات (Expenses)
 // ==========================================
 class Expenses extends Table {
   IntColumn get id => integer().autoIncrement()();
-  IntColumn get shiftId => integer().nullable().references(Shifts, #id)(); // قد تكون مصروفات خارج الوردية
-  IntColumn get userId => integer().references(Users, #id)(); // من قام بتسجيل المصروف
+  IntColumn get shiftId => integer().nullable().references(Shifts, #id)();
+  IntColumn get userId => integer().references(Users, #id)();
   RealColumn get amount => real()();
   TextColumn get reason => text()();
   DateTimeColumn get date => dateTime()();
@@ -76,7 +75,7 @@ class Invoices extends Table {
   RealColumn get discount => real().withDefault(const Constant(0.0))();
   RealColumn get tax => real().withDefault(const Constant(0.0))();
   RealColumn get grandTotal => real()();
-  TextColumn get paymentMethod => text()(); // (Cash, Visa, etc.)
+  TextColumn get paymentMethod => text()(); // نقدي، فيزا، أخرى
   DateTimeColumn get date => dateTime()();
 }
 
@@ -84,7 +83,7 @@ class InvoiceItems extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get invoiceId => integer().references(Invoices, #id)();
   IntColumn get productId => integer().references(Products, #id)();
-  RealColumn get quantity => real()(); // Real لدعم الكميات الكسرية (مثل الوزن)
+  RealColumn get quantity => real()(); // Real للسماح بالكسور (كالوزن)
   RealColumn get unitPrice => real()();
   RealColumn get totalPrice => real()();
 }
@@ -93,11 +92,11 @@ class InvoiceItems extends Table {
 // 6. جدول الإعدادات العامة (AppSettings)
 // ==========================================
 class AppSettings extends Table {
-  TextColumn get settingKey => text()(); // (مثال: restaurant_name, printer_ip)
+  TextColumn get settingKey => text()(); 
   TextColumn get settingValue => text()();
   
   @override
-  Set<Column> get primaryKey => {settingKey}; // Key-Value pair
+  Set<Column> get primaryKey => {settingKey};
 }
 
 // ==========================================
@@ -112,7 +111,7 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  // تفعيل Foreign Keys في SQLite
+  // تفعيل القيود الصارمة للعلاقات (Foreign Keys)
   @override
   MigrationStrategy get migration => MigrationStrategy(
         beforeOpen: (details) async {
@@ -124,7 +123,7 @@ class AppDatabase extends _$AppDatabase {
 LazyDatabase _openConnection() {
   return LazyDatabase(() async {
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'pos_offline.sqlite'));
+    final file = File(p.join(dbFolder.path, 'pos_egypt_offline.sqlite'));
     return NativeDatabase.createInBackground(file);
   });
 }
