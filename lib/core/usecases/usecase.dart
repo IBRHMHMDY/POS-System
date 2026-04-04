@@ -6,7 +6,7 @@ import '../errors/failures.dart';
 /// [T] يمثل نوع البيانات العائدة في حالة النجاح.
 /// [Params] يمثل المعاملات المطلوبة لتنفيذ العملية.
 abstract class UseCase<T, Params> {
-  Future<Either<Failure, Type>> call(Params params);
+  Future<Either<Failure, T>> call(Params params);
 }
 
 /// كلاس مساعد يستخدم عندما لا يتطلب الـ UseCase أي معاملات.
