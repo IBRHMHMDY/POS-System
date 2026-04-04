@@ -3,10 +3,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'core/theme/app_theme.dart';
 
 void main() async {
+  // التأكد من تهيئة بيئة Flutter قبل تنفيذ أي كود يعتمد على الـ Platform
   WidgetsFlutterBinding.ensureInitialized();
-  // TODO: Initialize Dependency Injection (get_it)
-  // TODO: Initialize Local Database (Drift)
   
+  // TODO: تهيئة الاعتماديات (Dependency Injection) سيتم إضافتها لاحقاً
+  // TODO: تهيئة قاعدة البيانات المحلية سيتم إضافتها لاحقاً
+
   runApp(const PosApp());
 }
 
@@ -16,10 +18,11 @@ class PosApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'POS System',
+      title: 'نظام نقاط البيع',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      // دعم اللغة العربية وتوجيه الواجهة RTL
+      
+      // إعدادات اللغة لدعم السوق المصري (RTL)
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -28,10 +31,12 @@ class PosApp extends StatelessWidget {
       supportedLocales: const [
         Locale('ar', 'EG'), // العربية - مصر
       ],
-      locale: const Locale('ar', 'EG'),
+      locale: const Locale('ar', 'EG'), // فرض اللغة العربية بشكل أساسي
+      
+      // شاشة مؤقتة حتى نقوم بربط ميزة التراخيص وتسجيل الدخول
       home: const Scaffold(
         body: Center(
-          child: Text('جاري تهيئة نظام نقاط البيع...'),
+          child: Text('جاري تهيئة نظام الكاشير...'),
         ),
       ),
     );
