@@ -69,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 // توجيه المستخدم بعد نجاح تسجيل الدخول
                 // ملاحظة: لاحقاً سنوجه الكاشير لشاشة الـ POS والمدير للوحة التحكم
                 // حالياً سنوجهه لشاشة إدارة القوائم لتجربة وتأكيد عمل الميزة
-                context.go('/menu-admin');
+                context.go('/shifts');
               }
             },
             builder: (context, state) {
