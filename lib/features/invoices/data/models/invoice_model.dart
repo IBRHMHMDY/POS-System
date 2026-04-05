@@ -2,54 +2,58 @@ import 'package:drift/drift.dart' as drift;
 import '../../../../core/database/app_database.dart' as db;
 import '../../domain/entities/invoice_entity.dart';
 
-class OrderModel extends OrderEntity {
-  const OrderModel({
+class InvoiceModel extends InvoiceEntity {
+  const InvoiceModel({
     required super.id,
     required super.shiftId,
-    required super.totalAmount,
+    required super.userId,
+    required super.subTotal,
     super.discount,
     super.tax,
-    required super.finalAmount,
+    required super.grandTotal,
     required super.paymentMethod,
-    required super.createdAt,
+    required super.date,
   });
 
-  factory OrderModel.fromEntity(OrderEntity entity) {
-    return OrderModel(
+  factory InvoiceModel.fromEntity(InvoiceEntity entity) {
+    return InvoiceModel(
       id: entity.id,
       shiftId: entity.shiftId,
-      totalAmount: entity.totalAmount,
+      userId: entity.userId,
+      subTotal: entity.subTotal,
       discount: entity.discount,
       tax: entity.tax,
-      finalAmount: entity.finalAmount,
+      grandTotal: entity.grandTotal,
       paymentMethod: entity.paymentMethod,
-      createdAt: entity.createdAt,
+      date: entity.date,
     );
   }
 
-  factory OrderModel.fromDriftOrder(db.Invoice driftOrder) {
-    return OrderModel(
-      id: driftOrder.id,
-      shiftId: driftOrder.shiftId,
-      totalAmount: driftOrder.totalAmount,
-      discount: driftOrder.discount,
-      tax: driftOrder.tax,
-      finalAmount: driftOrder.finalAmount,
-      paymentMethod: _mapStringToPaymentMethod(driftOrder.paymentMethod),
-      createdAt: driftOrder.createdAt,
+  factory InvoiceModel.fromDriftInvoice(db.Invoice driftInvoice) {
+    return InvoiceModel(
+      id: driftInvoice.id,
+      shiftId: driftInvoice.shiftId,
+      userId: driftInvoice.userId,
+      subTotal: driftInvoice.subTotal,
+      discount: driftInvoice.discount,
+      tax: driftInvoice.tax,
+      grandTotal: driftInvoice.grandTotal,
+      paymentMethod: _mapStringToPaymentMethod(driftInvoice.paymentMethod),
+      date: driftInvoice.date,
     );
   }
 
-  db.OrdersCompanion toDriftCompanion() {
-    return db.OrdersCompanion(
+  db.InvoicesCompanion toDriftCompanion() {
+    return db.InvoicesCompanion(
       id: id == 0 ? const drift.Value.absent() : drift.Value(id),
       shiftId: drift.Value(shiftId),
-      totalAmount: drift.Value(totalAmount),
+      userId: drift.Value(userId),
+      subTotal: drift.Value(subTotal),
       discount: drift.Value(discount),
       tax: drift.Value(tax),
-      finalAmount: drift.Value(finalAmount),
+      grandTotal: drift.Value(grandTotal),
       paymentMethod: drift.Value(_mapPaymentMethodToString(paymentMethod)),
-      createdAt: drift.Value(createdAt),
+      date: drift.Value(date),
     );
   }
 
@@ -66,7 +70,8 @@ class OrderModel extends OrderEntity {
     switch (method) {
       case PaymentMethod.visa: return 'visa';
       case PaymentMethod.later: return 'later';
-      case PaymentMethod.cash: return 'cash';
+      case PaymentMethod.cash:
+      default: return 'cash';
     }
   }
 }

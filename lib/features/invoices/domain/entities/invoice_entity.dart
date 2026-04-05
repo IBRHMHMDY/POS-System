@@ -4,34 +4,37 @@ enum PaymentMethod { cash, visa, later }
 
 class InvoiceEntity extends Equatable {
   final int id;
-  final int shiftId; // ربط الفاتورة بالوردية الحالية
-  final double totalAmount; // الإجمالي قبل الخصم والضريبة
+  final int shiftId;
+  final int userId; // تم إضافة حقل المستخدم الذي أنشأ الفاتورة
+  final double subTotal; // تعديل المسمى
   final double discount;
   final double tax;
-  final double finalAmount; // الإجمالي النهائي المطلوب دفعه
+  final double grandTotal; // تعديل المسمى
   final PaymentMethod paymentMethod;
-  final DateTime createdAt;
+  final DateTime date; // تعديل المسمى
 
   const InvoiceEntity({
     required this.id,
     required this.shiftId,
-    required this.totalAmount,
+    required this.userId,
+    required this.subTotal,
     this.discount = 0.0,
     this.tax = 0.0,
-    required this.finalAmount,
+    required this.grandTotal,
     required this.paymentMethod,
-    required this.createdAt,
+    required this.date,
   });
 
   @override
   List<Object?> get props => [
         id,
         shiftId,
-        totalAmount,
+        userId,
+        subTotal,
         discount,
         tax,
-        finalAmount,
+        grandTotal,
         paymentMethod,
-        createdAt,
+        date,
       ];
 }
