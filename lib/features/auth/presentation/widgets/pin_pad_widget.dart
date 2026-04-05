@@ -52,7 +52,7 @@ class PinPadWidget extends StatelessWidget {
   Widget _buildRow(List<String> numbers, BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: numbers.map((num) => _buildNumberButton(num, context)).toList(),
+      children: numbers.map((number) => _buildNumberButton(number, context)).toList(),
     );
   }
 
