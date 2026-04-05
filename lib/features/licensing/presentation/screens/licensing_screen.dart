@@ -61,7 +61,13 @@ class _LicensingScreenState extends State<LicensingScreen> {
                     backgroundColor: AppColors.success,
                   ),
                 );
+                // التوجيه إلى شاشة تسجيل الدخول بعد التفعيل الناجح
                 context.go('/login');
+              } else if (state is LicensingStatusLoaded) {
+                // إذا كان النظام مفعلاً مسبقاً، نقوم بالتوجيه هنا من داخل الـ Listener
+                if (state.isActivated) {
+                  context.go('/login');
+                }
               }
             },
             builder: (context, state) {
@@ -70,15 +76,23 @@ class _LicensingScreenState extends State<LicensingScreen> {
               }
 
               if (state is LicensingStatusLoaded) {
-                // إذا كان النظام مفعلاً مسبقاً، لا داعي لعرض الشاشة (يمكن توجيهه لاحقاً)
+                // إذا كان مفعلاً، نعرض فقط شاشة تحميل بسيطة لأن الـ Listener سيقوم بالتوجيه فوراً
                 if (state.isActivated) {
-                  return const Text('النظام مفعل مسبقاً. جاري التوجيه...');
+                  return const Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CircularProgressIndicator(color: AppColors.primary),
+                      SizedBox(height: 16),
+                      Text('النظام مفعل مسبقاً. جاري التوجيه...'),
+                    ],
+                  );
                 }
 
+                // إذا لم يكن مفعلاً، نعرض نموذج التفعيل
                 return _buildActivationForm(context, state.deviceId);
               }
 
-              // في حالة وجود خطأ وبقاء الشاشة
+              // في حالة وجود خطأ
               return ElevatedButton(
                 onPressed: () => context.read<LicensingBloc>().add(CheckLicenseStatus()),
                 child: const Text('إعادة المحاولة'),

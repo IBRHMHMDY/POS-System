@@ -53,16 +53,29 @@ class _ProductDialogState extends State<ProductDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      title: Text(widget.product == null ? 'إضافة منتج جديد' : 'تعديل المنتج'),
-      content: SizedBox(
-        width: 400,
-        child: Form(
-          key: _formKey,
-          child: SingleChildScrollView(
+    // استخدام Dialog العادي بدلاً من AlertDialog لمرونة أكبر مع لوحة المفاتيح
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      child: SingleChildScrollView(
+        // padding يغنينا عن المساحات الافتراضية في AlertDialog
+        padding: const EdgeInsets.all(24.0), 
+        child: SizedBox(
+          width: 400,
+          child: Form(
+            key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // العنوان
+                Text(
+                  widget.product == null ? 'إضافة منتج جديد' : 'تعديل المنتج',
+                  style: Theme.of(context).textTheme.titleLarge,
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 24),
+                
+                // الحقول
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'اسم الصنف'),
@@ -87,26 +100,34 @@ class _ProductDialogState extends State<ProductDialog> {
                 ),
                 const SizedBox(height: 16),
                 SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
                   title: const Text('حالة المنتج (متوفر/غير متوفر)'),
                   value: _isActive,
                   activeColor: AppColors.primary,
                   onChanged: (val) => setState(() => _isActive = val),
+                ),
+                const SizedBox(height: 32),
+                
+                // الأزرار
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text('إلغاء', style: TextStyle(color: AppColors.textSecondary)),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: _submit,
+                      child: const Text('حفظ'),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
         ),
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('إلغاء', style: TextStyle(color: AppColors.textSecondary)),
-        ),
-        ElevatedButton(
-          onPressed: _submit,
-          child: const Text('حفظ'),
-        ),
-      ],
     );
   }
 }

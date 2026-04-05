@@ -202,7 +202,7 @@ class _MenuAdminScreenState extends State<MenuAdminScreen> {
                             padding: const EdgeInsets.all(16.0),
                             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                               maxCrossAxisExtent: 250,
-                              childAspectRatio: 3 / 2,
+                              childAspectRatio: 1.0, // <-- تم تعديل النسبة لتوفير مساحة طولية أكبر للكارت
                               crossAxisSpacing: 16,
                               mainAxisSpacing: 16,
                             ),
@@ -217,28 +217,35 @@ class _MenuAdminScreenState extends State<MenuAdminScreen> {
                                   borderRadius: BorderRadius.circular(12),
                                   child: Padding(
                                     padding: const EdgeInsets.all(12.0),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(product.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16), textAlign: TextAlign.center),
-                                        const SizedBox(height: 8),
-                                        Text('${product.price} ج.م', style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
-                                        const SizedBox(height: 8),
-                                        if (product.barcode != null)
-                                          Text('باركود: ${product.barcode}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                          decoration: BoxDecoration(
-                                            color: product.isActive ? AppColors.success.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
-                                            borderRadius: BorderRadius.circular(8),
+                                    // تم إضافة SingleChildScrollView لمنع الخطأ إذا كان النص طويلاً
+                                    child: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            product.name, 
+                                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16), 
+                                            textAlign: TextAlign.center,
                                           ),
-                                          child: Text(
-                                            product.isActive ? 'متوفر' : 'غير متوفر',
-                                            style: TextStyle(color: product.isActive ? AppColors.success : AppColors.error, fontSize: 12),
+                                          const SizedBox(height: 8),
+                                          Text('${product.price} ج.م', style: const TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold)),
+                                          const SizedBox(height: 8),
+                                          if (product.barcode != null)
+                                            Text('باركود: ${product.barcode}', style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                                          const SizedBox(height: 8),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                            decoration: BoxDecoration(
+                                              color: product.isActive ? AppColors.success.withOpacity(0.1) : AppColors.error.withOpacity(0.1),
+                                              borderRadius: BorderRadius.circular(8),
+                                            ),
+                                            child: Text(
+                                              product.isActive ? 'متوفر' : 'غير متوفر',
+                                              style: TextStyle(color: product.isActive ? AppColors.success : AppColors.error, fontSize: 12),
+                                            ),
                                           ),
-                                        ),
-                                      ],
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
