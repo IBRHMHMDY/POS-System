@@ -196,7 +196,7 @@ class _ShiftScreenState extends State<ShiftScreen> {
                                     }
                                     return ListView.separated(
                                       itemCount: expenseState.expenses.length,
-                                      separatorBuilder: (_, __) => const Divider(height: 1),
+                                      separatorBuilder: (_, _) => const Divider(height: 1),
                                       itemBuilder: (context, index) {
                                         final expense = expenseState.expenses[index];
                                         return ListTile(

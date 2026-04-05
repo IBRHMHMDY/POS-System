@@ -71,7 +71,7 @@ class InvoiceModel extends InvoiceEntity {
       case PaymentMethod.visa: return 'visa';
       case PaymentMethod.later: return 'later';
       case PaymentMethod.cash:
-      default: return 'cash';
+      return 'cash';
     }
   }
 }
