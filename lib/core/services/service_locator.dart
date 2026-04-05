@@ -61,7 +61,12 @@ import 'package:pos_system/features/invoices/domain/usecases/create_invoice_usec
 import 'package:pos_system/features/invoices/domain/usecases/get_invoice_items_usecase.dart';
 import 'package:pos_system/features/invoices/domain/usecases/get_invoices_by_shift_usecase.dart';
 import 'package:pos_system/features/invoices/presentation/bloc/cart/cart_bloc.dart';
-
+// استدعاء ملفات ميزة التقارير (Reports)
+import '../../features/reports/data/datasources/report_local_data_source.dart';
+import '../../features/reports/data/repositories/report_repository_impl.dart';
+import '../../features/reports/domain/repositories/report_repository.dart';
+import '../../features/reports/domain/usecases/get_report_summary_usecase.dart';
+import '../../features/reports/presentation/bloc/report_bloc.dart';
 
 final sl = GetIt.instance; // sl: Service Locator
 
@@ -267,6 +272,29 @@ Future<void> initServiceLocator() async {
     ),
   );
 
+  // ==========================================
+  // 7. Features - Reports (التقارير المالية)
+  // ==========================================
+  
+  // Data Sources
+  sl.registerLazySingleton<ReportLocalDataSource>(
+    () => ReportLocalDataSourceImpl(db: sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<ReportRepository>(
+    () => ReportRepositoryImpl(localDataSource: sl()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => GetReportSummaryUseCase(sl()));
+
+  // BLoCs
+  sl.registerFactory(
+    () => ReportBloc(
+      getReportSummaryUseCase: sl(),
+    ),
+  );
 
 
 }

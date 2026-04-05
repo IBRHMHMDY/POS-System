@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pos_system/features/reports/presentation/screens/reports_screen.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../invoices/presentation/screens/pos_screen.dart';
 import '../../../menu/presentation/screens/menu_admin_screen.dart';
@@ -19,7 +20,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     PosScreen(),
     ShiftScreen(),
     MenuAdminScreen(),
-    // يمكن إضافة شاشات التقارير والإعدادات هنا لاحقاً
+    ReportsScreen(),
   ];
 
   @override
@@ -70,6 +71,10 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
               NavigationRailDestination(
                 icon: Icon(Icons.restaurant_menu),
                 label: Text('قائمة الطعام'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.analytics),
+                label: Text('التقارير'),
               ),
             ],
           ),
