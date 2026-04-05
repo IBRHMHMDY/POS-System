@@ -22,7 +22,22 @@ import '../../features/auth/domain/usecases/get_current_user_usecase.dart';
 import '../../features/auth/domain/usecases/login_usecase.dart';
 import '../../features/auth/domain/usecases/logout_usecase.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
-
+// Menu Feature
+import '../../features/menu/data/datasources/menu_local_data_source.dart';
+import '../../features/menu/data/repositories/menu_repository_impl.dart';
+import '../../features/menu/domain/repositories/menu_repository.dart';
+import '../../features/menu/domain/usecases/categories/add_category_usecase.dart';
+import '../../features/menu/domain/usecases/categories/delete_category_usecase.dart';
+import '../../features/menu/domain/usecases/categories/get_all_categories_usecase.dart';
+import '../../features/menu/domain/usecases/categories/update_category_usecase.dart';
+import '../../features/menu/domain/usecases/products/add_product_usecase.dart';
+import '../../features/menu/domain/usecases/products/delete_product_usecase.dart';
+import '../../features/menu/domain/usecases/products/get_all_products_usecase.dart';
+import '../../features/menu/domain/usecases/products/get_product_by_barcode_usecase.dart';
+import '../../features/menu/domain/usecases/products/get_products_by_category_usecase.dart';
+import '../../features/menu/domain/usecases/products/update_product_usecase.dart';
+import '../../features/menu/presentation/bloc/category/category_bloc.dart';
+import '../../features/menu/presentation/bloc/product/product_bloc.dart';
 
 final sl = GetIt.instance; // sl: Service Locator
 
@@ -98,5 +113,52 @@ Future<void> initServiceLocator() async {
     ),
   );
 
+  // ==========================================
+  // 4. Features - Menu (قوائم الطعام)
+  // ==========================================
   
+  // Data Sources
+  sl.registerLazySingleton<MenuLocalDataSource>(
+    () => MenuLocalDataSourceImpl(db: sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<MenuRepository>(
+    () => MenuRepositoryImpl(localDataSource: sl()),
+  );
+
+  // Categories Use Cases
+  sl.registerLazySingleton(() => GetAllCategoriesUseCase(sl()));
+  sl.registerLazySingleton(() => AddCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteCategoryUseCase(sl()));
+
+  // Products Use Cases
+  sl.registerLazySingleton(() => GetProductsByCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => GetAllProductsUseCase(sl()));
+  sl.registerLazySingleton(() => GetProductByBarcodeUseCase(sl()));
+  sl.registerLazySingleton(() => AddProductUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateProductUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteProductUseCase(sl()));
+
+  // BLoCs
+  sl.registerFactory(
+    () => CategoryBloc(
+      getAllCategoriesUseCase: sl(),
+      addCategoryUseCase: sl(),
+      updateCategoryUseCase: sl(),
+      deleteCategoryUseCase: sl(),
+    ),
+  );
+
+  sl.registerFactory(
+    () => ProductBloc(
+      getAllProductsUseCase: sl(),
+      getProductsByCategoryUseCase: sl(),
+      getProductByBarcodeUseCase: sl(),
+      addProductUseCase: sl(),
+      updateProductUseCase: sl(),
+      deleteProductUseCase: sl(),
+    ),
+  );
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_event.dart';
@@ -54,18 +55,21 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor: AppColors.error,
                   ),
                 );
-                // تصفير الرمز عند الفشل لسرعة إعادة الإدخال
                 setState(() {
                   _passcode = '';
                 });
               } else if (state is AuthAuthenticated) {
-                // TODO: توجيه المستخدم لشاشة الكاشير أو لوحة التحكم حسب صلاحياته
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('مرحباً بك، ${state.user.name}'),
                     backgroundColor: AppColors.success,
                   ),
                 );
+                
+                // توجيه المستخدم بعد نجاح تسجيل الدخول
+                // ملاحظة: لاحقاً سنوجه الكاشير لشاشة الـ POS والمدير للوحة التحكم
+                // حالياً سنوجهه لشاشة إدارة القوائم لتجربة وتأكيد عمل الميزة
+                context.go('/menu-admin');
               }
             },
             builder: (context, state) {

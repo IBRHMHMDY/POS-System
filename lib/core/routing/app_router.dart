@@ -10,7 +10,10 @@ import '../../features/licensing/presentation/bloc/licensing_bloc.dart';
 // Auth
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_event.dart';
-
+// Menu
+import '../../features/menu/presentation/bloc/category/category_bloc.dart';
+import '../../features/menu/presentation/bloc/product/product_bloc.dart';
+import '../../features/menu/presentation/screens/menu_admin_screen.dart';
 import '../services/service_locator.dart';
 
 class AppRouter {
@@ -39,7 +42,20 @@ class AppRouter {
           );
         },
       ),
-      // TODO: سيتم إضافة مسارات (POS, Admin Dashboard) لاحقاً
+      GoRoute(
+        path: '/menu-admin',
+        name: 'menu_admin',
+        builder: (context, state) {
+          // الشاشة تحتاج إلى 2 BLoC معاً، لذلك نستخدم MultiBlocProvider
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => sl<CategoryBloc>()),
+              BlocProvider(create: (_) => sl<ProductBloc>()),
+            ],
+            child: const MenuAdminScreen(),
+          );
+        },
+      ),
     ],
     errorBuilder: (context, state) => Scaffold(
       body: Center(
