@@ -1,17 +1,17 @@
 import 'package:equatable/equatable.dart';
 
-class OrderItemEntity extends Equatable {
+class InvoiceItemEntity extends Equatable {
   final int id;
-  final int? orderId; // سيكون null قبل حفظ الفاتورة في قاعدة البيانات
+  final int? invoiceId; // سيكون null قبل حفظ الفاتورة في قاعدة البيانات
   final int productId;
-  final String productName; // حفظ الاسم وقت البيع لضمان استقرار الفواتير
-  final double quantity; // double للسماح ببيع المنتجات بالوزن (مثل 1.5 كجم)
+  final String productName; // حفظ الاسم وقت البيع لضمان استقرار الفواتير القديمة
+  final double quantity; 
   final double unitPrice; // سعر الوحدة وقت البيع
   final double totalPrice;
 
-  const OrderItemEntity({
+  const InvoiceItemEntity({
     required this.id,
-    this.orderId,
+    this.invoiceId,
     required this.productId,
     required this.productName,
     required this.quantity,
@@ -22,7 +22,7 @@ class OrderItemEntity extends Equatable {
   @override
   List<Object?> get props => [
         id,
-        orderId,
+        invoiceId,
         productId,
         productName,
         quantity,

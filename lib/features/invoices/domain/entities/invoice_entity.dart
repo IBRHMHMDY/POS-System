@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 
 enum PaymentMethod { cash, visa, later }
 
-class OrderEntity extends Equatable {
+class InvoiceEntity extends Equatable {
   final int id;
   final int shiftId; // ربط الفاتورة بالوردية الحالية
   final double totalAmount; // الإجمالي قبل الخصم والضريبة
@@ -12,7 +12,7 @@ class OrderEntity extends Equatable {
   final PaymentMethod paymentMethod;
   final DateTime createdAt;
 
-  const OrderEntity({
+  const InvoiceEntity({
     required this.id,
     required this.shiftId,
     required this.totalAmount,
