@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../bloc/licensing_bloc.dart';
 import '../bloc/licensing_event.dart';
@@ -60,7 +61,7 @@ class _LicensingScreenState extends State<LicensingScreen> {
                     backgroundColor: AppColors.success,
                   ),
                 );
-                // TODO: التوجيه لاحقاً إلى شاشة تسجيل الدخول (Login Screen)
+                context.go('/login');
               }
             },
             builder: (context, state) {
