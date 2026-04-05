@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:pos_system/features/auth/presentation/screens/login_screen.dart';
 import 'package:pos_system/features/licensing/presentation/screens/licensing_screen.dart';
 import 'package:pos_system/features/reports/presentation/bloc/report_bloc.dart';
+import 'package:pos_system/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:pos_system/features/shifts/presentation/bloc/expense/expense_bloc.dart';
 import 'package:pos_system/features/shifts/presentation/bloc/shift/shift_bloc.dart';
 import 'package:pos_system/features/shifts/presentation/screens/shift_screen.dart';
@@ -64,7 +65,8 @@ class AppRouter {
               BlocProvider(create: (_) => sl<ProductBloc>()),
               BlocProvider(create: (_) => sl<CartBloc>()),
               BlocProvider(create: (_) => sl<ExpenseBloc>()),
-              BlocProvider(create: (_) => sl<ReportBloc>()), // تم إضافة بلوك التقارير هنا
+              BlocProvider(create: (_) => sl<ReportBloc>()),
+              BlocProvider(create: (_) => sl<SettingsBloc>()),
             ],
             child: const MainDashboardScreen(),
           );

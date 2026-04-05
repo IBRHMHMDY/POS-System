@@ -67,6 +67,14 @@ import '../../features/reports/data/repositories/report_repository_impl.dart';
 import '../../features/reports/domain/repositories/report_repository.dart';
 import '../../features/reports/domain/usecases/get_report_summary_usecase.dart';
 import '../../features/reports/presentation/bloc/report_bloc.dart';
+// Settings
+import '../../features/settings/data/datasources/settings_local_data_source.dart';
+import '../../features/settings/data/repositories/settings_repository_impl.dart';
+import '../../features/settings/domain/repositories/settings_repository.dart';
+import '../../features/settings/domain/usecases/get_all_settings_usecase.dart';
+import '../../features/settings/domain/usecases/save_settings_usecase.dart';
+import '../../features/settings/presentation/bloc/settings_bloc.dart';
+
 
 final sl = GetIt.instance; // sl: Service Locator
 
@@ -296,5 +304,18 @@ Future<void> initServiceLocator() async {
     ),
   );
 
+  // ==========================================
+  // 8. Features - Settings (الإعدادات)
+  // ==========================================
+  
+  sl.registerLazySingleton<SettingsLocalDataSource>(() => SettingsLocalDataSourceImpl(db: sl()));
+  sl.registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(localDataSource: sl()));
+  sl.registerLazySingleton(() => GetAllSettingsUseCase(sl()));
+  sl.registerLazySingleton(() => SaveSettingsUseCase(sl()));
+  
+  sl.registerFactory(() => SettingsBloc(
+    getAllSettingsUseCase: sl(),
+    saveSettingsUseCase: sl(),
+  ));
 
 }

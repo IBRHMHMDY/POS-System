@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pos_system/features/reports/presentation/screens/reports_screen.dart';
+import 'package:pos_system/features/settings/presentation/screens/settings_screen.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../invoices/presentation/screens/pos_screen.dart';
 import '../../../menu/presentation/screens/menu_admin_screen.dart';
@@ -21,6 +22,7 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
     ShiftScreen(),
     MenuAdminScreen(),
     ReportsScreen(),
+    SettingsScreen(),
   ];
 
   @override
@@ -75,6 +77,10 @@ class _MainDashboardScreenState extends State<MainDashboardScreen> {
               NavigationRailDestination(
                 icon: Icon(Icons.analytics),
                 label: Text('التقارير'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.settings),
+                label: Text('الإعدادات'),
               ),
             ],
           ),
