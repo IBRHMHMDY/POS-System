@@ -17,7 +17,13 @@ import 'package:pos_system/features/auth/presentation/bloc/auth_event.dart';
 import 'package:pos_system/features/menu/presentation/bloc/category/category_bloc.dart';
 import 'package:pos_system/features/menu/presentation/bloc/product/product_bloc.dart';
 import 'package:pos_system/features/menu/presentation/screens/menu_admin_screen.dart';
+// POS & Invoices
+import '../../features/invoices/presentation/bloc/cart/cart_bloc.dart';
+import '../../features/invoices/presentation/screens/pos_screen.dart';
+
 import '../services/service_locator.dart';
+
+
 
 class AppRouter {
   static final GoRouter router = GoRouter(
@@ -70,6 +76,22 @@ class AppRouter {
               BlocProvider(create: (_) => sl<ExpenseBloc>()),
             ],
             child: const ShiftScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/pos',
+        name: 'pos',
+        builder: (context, state) {
+          // شاشة الـ POS هي الشاشة الأكبر وتتطلب 4 BLoCs لتعمل معاً بكفاءة
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => sl<ShiftBloc>()),
+              BlocProvider(create: (_) => sl<CategoryBloc>()),
+              BlocProvider(create: (_) => sl<ProductBloc>()),
+              BlocProvider(create: (_) => sl<CartBloc>()),
+            ],
+            child: const PosScreen(),
           );
         },
       ),

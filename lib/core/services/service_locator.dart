@@ -53,7 +53,14 @@ import 'package:pos_system/features/shifts/domain/usecases/shifts/get_shift_hist
 import 'package:pos_system/features/shifts/domain/usecases/shifts/open_shift_usecase.dart';
 import 'package:pos_system/features/shifts/presentation/bloc/expense/expense_bloc.dart';
 import 'package:pos_system/features/shifts/presentation/bloc/shift/shift_bloc.dart';
-
+// استدعاء ملفات ميزة المبيعات (Invoices & Cart)
+import 'package:pos_system/features/invoices/data/datasources/invoice_local_data_source.dart';
+import 'package:pos_system/features/invoices/data/repositories/invoice_repository_impl.dart';
+import 'package:pos_system/features/invoices/domain/repositories/invoice_repository.dart';
+import 'package:pos_system/features/invoices/domain/usecases/create_invoice_usecase.dart';
+import 'package:pos_system/features/invoices/domain/usecases/get_invoice_items_usecase.dart';
+import 'package:pos_system/features/invoices/domain/usecases/get_invoices_by_shift_usecase.dart';
+import 'package:pos_system/features/invoices/presentation/bloc/cart/cart_bloc.dart';
 
 
 final sl = GetIt.instance; // sl: Service Locator
@@ -233,4 +240,33 @@ Future<void> initServiceLocator() async {
       getExpensesForShiftUseCase: sl(),
     ),
   );
+
+  // ==========================================
+  // 6. Features - Invoices & Cart (المبيعات والفواتير)
+  // ==========================================
+  
+  // Data Sources
+  sl.registerLazySingleton<InvoiceLocalDataSource>(
+    () => InvoiceLocalDataSourceImpl(db: sl()),
+  );
+
+  // Repositories
+  sl.registerLazySingleton<InvoiceRepository>(
+    () => InvoiceRepositoryImpl(localDataSource: sl()),
+  );
+
+  // Use Cases
+  sl.registerLazySingleton(() => CreateInvoiceUseCase(sl()));
+  sl.registerLazySingleton(() => GetInvoicesByShiftUseCase(sl()));
+  sl.registerLazySingleton(() => GetInvoiceItemsUseCase(sl()));
+
+  // BLoCs
+  sl.registerFactory(
+    () => CartBloc(
+      createInvoiceUseCase: sl(),
+    ),
+  );
+
+
+
 }
