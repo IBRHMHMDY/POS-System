@@ -103,7 +103,7 @@ class _ProductDialogState extends State<ProductDialog> {
                   contentPadding: EdgeInsets.zero,
                   title: const Text('حالة المنتج (متوفر/غير متوفر)'),
                   value: _isActive,
-                  activeColor: AppColors.primary,
+                  activeThumbColor: AppColors.primary,
                   onChanged: (val) => setState(() => _isActive = val),
                 ),
                 const SizedBox(height: 32),

@@ -1,10 +1,11 @@
 import 'package:dartz/dartz.dart';
+import 'package:pos_system/features/shifts/data/datasource/expense_local_data_source.dart';
+import 'package:pos_system/features/shifts/data/datasource/shift_local_data_source.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../auth/data/datasources/auth_local_data_source.dart';
 import '../../domain/entities/expense_entity.dart';
 import '../../domain/repositories/expense_repository.dart';
-import '../datasources/expense_local_data_source.dart';
-import '../datasources/shift_local_data_source.dart';
+
 import '../models/expense_model.dart';
 
 class ExpenseRepositoryImpl implements ExpenseRepository {

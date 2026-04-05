@@ -59,7 +59,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
             SwitchListTile(
               title: const Text('حالة القسم (نشط/غير نشط)'),
               value: _isActive,
-              activeColor: AppColors.primary,
+              activeThumbColor: AppColors.primary,
               onChanged: (val) => setState(() => _isActive = val),
             ),
           ],

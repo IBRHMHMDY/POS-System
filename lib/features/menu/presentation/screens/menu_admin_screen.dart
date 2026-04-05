@@ -134,7 +134,7 @@ class _MenuAdminScreenState extends State<MenuAdminScreen> {
                             }
                             return ListView.separated(
                               itemCount: state.categories.length,
-                              separatorBuilder: (_, __) => const Divider(height: 1),
+                              separatorBuilder: (_, _) => const Divider(height: 1),
                               itemBuilder: (context, index) {
                                 final category = state.categories[index];
                                 final isSelected = _selectedCategoryId == category.id;
