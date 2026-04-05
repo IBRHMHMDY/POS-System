@@ -1,25 +1,24 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class LicenseLocalDataSource {
-  Future<bool> getLicenseStatus();
-  Future<void> saveLicenseStatus(bool status);
+  Future<String?> getSavedLicenseToken();
+  Future<void> saveLicenseToken(String token);
 }
 
 class LicenseLocalDataSourceImpl implements LicenseLocalDataSource {
   final SharedPreferences sharedPreferences;
   
-  static const String licenseKey = 'IS_LICENSE_ACTIVATED';
+  static const String licenseTokenKey = 'SAVED_LICENSE_TOKEN';
 
   LicenseLocalDataSourceImpl({required this.sharedPreferences});
 
   @override
-  Future<bool> getLicenseStatus() async {
-    // إرجاع false كقيمة افتراضية إذا لم يكن المفتاح موجوداً (التطبيق يعمل لأول مرة)
-    return sharedPreferences.getBool(licenseKey) ?? false;
+  Future<String?> getSavedLicenseToken() async {
+    return sharedPreferences.getString(licenseTokenKey);
   }
 
   @override
-  Future<void> saveLicenseStatus(bool status) async {
-    await sharedPreferences.setBool(licenseKey, status);
+  Future<void> saveLicenseToken(String token) async {
+    await sharedPreferences.setString(licenseTokenKey, token);
   }
 }

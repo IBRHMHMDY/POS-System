@@ -10,10 +10,6 @@ class LicenseRepositoryImpl implements LicenseRepository {
   final LicenseLocalDataSource localDataSource;
   final DeviceInfoUtils deviceInfoUtils;
 
-  // المفتاح السري المشترك بين تطبيق نقاط البيع وتطبيق توليد التراخيص الخارجي
-  // تنويه: في بيئة الإنتاج الفعلية، يمكن تشفير هذا المفتاح (Obfuscation)
-  static const String _secretSalt = 'POS_RESTAURANT_EGYPT_2026_SECRET';
-
   LicenseRepositoryImpl({
     required this.localDataSource,
     required this.deviceInfoUtils,
@@ -32,33 +28,39 @@ class LicenseRepositoryImpl implements LicenseRepository {
   @override
   Future<Either<Failure, bool>> checkLicenseStatus() async {
     try {
-      final status = await localDataSource.getLicenseStatus();
-      return Right(status);
+      final savedToken = await localDataSource.getSavedLicenseToken();
+      if (savedToken == null) return const Right(false);
+
+      final deviceId = await deviceInfoUtils.getUniqueDeviceId();
+      
+      // التحقق مما إذا كان التوكن المحفوظ ما زال صالحاً (لم ينتهِ تاريخه ولم يتم التلاعب به)
+      final isValid = CryptoUtils.validateActivationToken(
+        token: savedToken,
+        expectedDeviceId: deviceId,
+      );
+
+      return Right(isValid);
     } catch (e) {
-      return const Left(DatabaseFailure('فشل في قراءة حالة الترخيص من الذاكرة المحلية.'));
+      return const Left(DatabaseFailure('فشل في قراءة حالة الترخيص من الذاكرة.'));
     }
   }
 
   @override
   Future<Either<Failure, License>> activateLicense(String activationCode) async {
     try {
-      // 1. استخراج معرف الجهاز
       final deviceId = await deviceInfoUtils.getUniqueDeviceId();
 
-      // 2. توليد الكود المتوقع باستخدام أداة التشفير (CryptoUtils)
-      final expectedCode = CryptoUtils.generateActivationCode(
-        deviceId: deviceId,
-        secretSalt: _secretSalt,
+      final isValid = CryptoUtils.validateActivationToken(
+        token: activationCode.trim(),
+        expectedDeviceId: deviceId,
       );
 
-      // 3. مقارنة الكود المدخل مع الكود المتوقع
-      if (activationCode.trim().toUpperCase() == expectedCode) {
-        // 4. في حالة التطابق، نقوم بحفظ حالة التفعيل في الذاكرة المحلية
-        await localDataSource.saveLicenseStatus(true);
+      if (isValid) {
+        // حفظ التوكن الجديد بالكامل
+        await localDataSource.saveLicenseToken(activationCode.trim());
         return Right(License(deviceId: deviceId, isActivated: true));
       } else {
-        // 5. في حالة عدم التطابق، نرجع خطأ صلاحيات
-        return const Left(PermissionFailure('كود التفعيل غير صحيح، يرجى التأكد والمحاولة مرة أخرى.'));
+        return const Left(PermissionFailure('كود التفعيل غير صحيح أو منتهي الصلاحية.'));
       }
     } catch (e) {
       return Left(UnexpectedFailure('حدث خطأ غير متوقع أثناء التفعيل: ${e.toString()}'));

@@ -15,7 +15,7 @@ import '../services/service_locator.dart';
 
 class AppRouter {
   static final GoRouter router = GoRouter(
-    initialLocation: '/login', // يبدأ بالتراخيص للتحقق منها أولاً
+    initialLocation: '/license', // يبدأ بالتراخيص للتحقق منها أولاً
     routes: [
       GoRoute(
         path: '/license',

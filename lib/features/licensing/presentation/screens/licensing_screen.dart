@@ -156,11 +156,11 @@ class _LicensingScreenState extends State<LicensingScreen> {
           TextField(
             controller: _codeController,
             decoration: const InputDecoration(
-              labelText: 'كود التفعيل',
-              hintText: 'أدخل كود التفعيل المكون من 10 أرقام/أحرف',
+              labelText: 'مفتاح الترخيص (License Key)',
+              hintText: 'قم بلصق مفتاح الترخيص كاملاً هنا',
             ),
-            textCapitalization: TextCapitalization.characters,
-            maxLength: 10,
+            maxLines: 3, // للسماح بعرض التوكن الطويل
+            // تم إزالة maxLength وتم إزالة TextCapitalization
           ),
           const SizedBox(height: 24),
           SizedBox(
