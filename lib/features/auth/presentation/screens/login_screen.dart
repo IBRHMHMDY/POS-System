@@ -65,11 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     backgroundColor: AppColors.success,
                   ),
                 );
-                
-                // توجيه المستخدم بعد نجاح تسجيل الدخول
-                // ملاحظة: لاحقاً سنوجه الكاشير لشاشة الـ POS والمدير للوحة التحكم
-                // حالياً سنوجهه لشاشة إدارة القوائم لتجربة وتأكيد عمل الميزة
-                context.go('/shifts');
+                context.go('/dashboard');
               }
             },
             builder: (context, state) {

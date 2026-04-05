@@ -17,10 +17,11 @@ import 'package:pos_system/features/auth/presentation/bloc/auth_event.dart';
 import 'package:pos_system/features/menu/presentation/bloc/category/category_bloc.dart';
 import 'package:pos_system/features/menu/presentation/bloc/product/product_bloc.dart';
 import 'package:pos_system/features/menu/presentation/screens/menu_admin_screen.dart';
-// POS & Invoices
-import '../../features/invoices/presentation/bloc/cart/cart_bloc.dart';
-import '../../features/invoices/presentation/screens/pos_screen.dart';
-
+// POS
+import 'package:pos_system/features/invoices/presentation/bloc/cart/cart_bloc.dart';
+import 'package:pos_system/features/invoices/presentation/screens/pos_screen.dart';
+// Dashboard
+import 'package:pos_system/features/dashboard/presentation/screens/main_dashboard_screen.dart';
 import '../services/service_locator.dart';
 
 
@@ -48,6 +49,23 @@ class AppRouter {
             // للتحقق مما إذا كان هناك جلسة سابقة محفوظة لعدم إجبار الكاشير على التسجيل مجدداً
             create: (_) => sl<AuthBloc>()..add(CheckAuthStatusEvent()),
             child: const LoginScreen(),
+          );
+        },
+      ),
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) {
+          // حقن جميع مديري الحالات (BLoCs) التي تحتاجها الشاشات الفرعية داخل الداشبورد
+          return MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => sl<ShiftBloc>()),
+              BlocProvider(create: (_) => sl<CategoryBloc>()),
+              BlocProvider(create: (_) => sl<ProductBloc>()),
+              BlocProvider(create: (_) => sl<CartBloc>()),
+              BlocProvider(create: (_) => sl<ExpenseBloc>()),
+            ],
+            child: const MainDashboardScreen(),
           );
         },
       ),
