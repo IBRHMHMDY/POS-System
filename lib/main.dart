@@ -11,8 +11,6 @@ void main() async {
   // 1. تهيئة الـ Service Locator
   await initServiceLocator();
   
-  // TODO: تهيئة قاعدة البيانات المحلية سيتم إضافتها هنا لاحقاً
-
   runApp(const PosApp());
 }
 

@@ -1,5 +1,6 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:get_it/get_it.dart';
+import 'package:pos_system/core/database/app_database.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // استدعاء ملفات ميزة التراخيص
@@ -24,7 +25,7 @@ Future<void> initServiceLocator() async {
   sl.registerLazySingleton(() => sharedPreferences);
   sl.registerLazySingleton(() => DeviceInfoPlugin());
   sl.registerLazySingleton(() => DeviceInfoUtils(deviceInfoPlugin: sl()));
-
+  sl.registerLazySingleton<AppDatabase>(() => AppDatabase());
   // ==========================================
   // 2. Features - Licensing (ميزة التراخيص)
   // ==========================================
