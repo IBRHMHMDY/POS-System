@@ -2,12 +2,12 @@ import 'package:equatable/equatable.dart';
 
 enum UserRole { owner, manager, cashier }
 
-class User extends Equatable {
+class UserEntity extends Equatable {
   final int id;
   final String name;
   final UserRole role;
 
-  const User({
+  const UserEntity({
     required this.id,
     required this.name,
     required this.role,
