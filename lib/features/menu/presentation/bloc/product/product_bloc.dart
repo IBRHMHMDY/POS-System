@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../../core/usecases/usecase.dart';
+import 'package:pos_system/core/usecases/usecase.dart';
 import '../../../domain/usecases/products/add_product_usecase.dart';
 import '../../../domain/usecases/products/delete_product_usecase.dart';
 import '../../../domain/usecases/products/get_all_products_usecase.dart';
